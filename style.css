@@ -1,0 +1,91 @@
+/*
+  Josh's Custom CSS Reset
+  https://www.joshwcomeau.com/css/custom-css-reset/
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+#root,
+#__next {
+  isolation: isolate;
+}
+
+button {
+  border: none;
+  border-radius: 1rem;
+}
+
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25% 50%;
+  grid-template-rows: 75vh;
+  place-content: center;
+  background-color: #a1a1aa;
+}
+.sidebar,
+.board {
+  border: 2px solid yellowgreen;
+}
+
+.sidebar {
+  display: grid;
+  place-content: center;
+}
+.reset-button {
+  padding: 0.75rem 1.5rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, clamp(3.5rem, 10vw, 140px));
+  grid-template-rows: repeat(3, clamp(3.5rem, 10vw, 140px));
+  /* grid-template-columns: repeat(3, 25%);
+  grid-template-rows: repeat(3, 25%); */
+  gap: 4%;
+  place-content: center;
+}
+
+.square {
+  /* box-shadow: 0 0 1rem 0 #f43f5e; */
+  font-size: clamp(1.5rem, 4vw, 4rem);
+}
+
+/* .square:disabled {
+  box-shadow: none;
+  background-color: #f4f4f5;
+  opacity: 1;
+} */
