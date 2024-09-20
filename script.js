@@ -54,7 +54,6 @@ function StartGame() {
   }
 
   function takeTurn(row, column, player) {
-    // need to move the error checking to here, however when we do this with a DOM element I'll set the disabled true on the button so it should be looked after from there;
     this.board.setSquareValue(
       row,
       column,
@@ -63,7 +62,6 @@ function StartGame() {
     );
     this.currentPlayer =
       this.currentPlayer === "player1" ? "player2" : "player1";
-    // console.log(this.board.squares);
     this.renderSquareValues();
     this.checkForWinner();
   }
@@ -158,14 +156,12 @@ console.log(currentGame);
 
 squareButtons.forEach((square) =>
   square.addEventListener("click", (event) => {
-    // console.log(event.target);
     currentGame.takeTurn(
       event.target.dataset.row,
       event.target.dataset.column,
       currentGame.currentPlayer
     );
     event.target.style.boxShadow = "0 0 1rem 0 #f43f5e";
-    // event.target.disabled = true;
   })
 );
 

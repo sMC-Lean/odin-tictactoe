@@ -73,19 +73,10 @@ button {
   display: grid;
   grid-template-columns: repeat(3, clamp(3.5rem, 10vw, 140px));
   grid-template-rows: repeat(3, clamp(3.5rem, 10vw, 140px));
-  /* grid-template-columns: repeat(3, 25%);
-  grid-template-rows: repeat(3, 25%); */
   gap: 4%;
   place-content: center;
 }
 
 .square {
-  /* box-shadow: 0 0 1rem 0 #f43f5e; */
   font-size: clamp(1.5rem, 4vw, 4rem);
 }
-
-/* .square:disabled {
-  box-shadow: none;
-  background-color: #f4f4f5;
-  opacity: 1;
-} */
