@@ -13,6 +13,9 @@
 body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  font-family: "Coiny", system-ui;
+  font-weight: 400;
+  font-style: normal;
 }
 img,
 picture,
@@ -42,41 +45,103 @@ h6 {
   isolation: isolate;
 }
 
-button {
+button,
+input {
   border: none;
   border-radius: 1rem;
+  background-color: #e4e4e7;
+  color: #be123c;
+}
+
+input {
+  background-color: #fafafa;
+  padding: 0 1.2ch;
+}
+
+input::placeholder {
+  color: #fda4af;
+}
+
+input:focus {
+  outline: 1px solid #f43f5e;
+  box-shadow: 0 0 1rem 0 #f43f5e;
+  color: #f43f5e;
+}
+
+button:hover,
+button:active {
+  box-shadow: 0 0 1rem 0 #f43f5e;
 }
 
 .wrapper {
   height: 100vh;
   width: 100%;
   display: grid;
-  grid-template-columns: 25% 50%;
+  grid-template-columns: 50% 25%;
   grid-template-rows: 75vh;
   place-content: center;
   background-color: #a1a1aa;
 }
+
+.display-winner {
+  position: absolute;
+  top: 20%;
+  width: 100vw;
+  text-align: center;
+  background-color: rgb(228, 228, 231, 0.8);
+  color: #be123c;
+  font-size: clamp(1rem, 3vw, 3rem);
+}
+
 .sidebar,
 .board {
   border: 2px solid yellowgreen;
+  display: grid;
 }
 
-.sidebar {
+.game-form {
+  width: 100%;
+  height: 40%;
   display: grid;
-  place-content: center;
+  align-self: center;
 }
-.reset-button {
-  padding: 0.75rem 1.5rem;
+
+form.new-game {
+  display: flex;
+  flex-direction: column;
+  gap: 4%;
+  width: clamp(200px, 75%, 350px);
+  justify-self: center;
+  font-size: clamp(0.8rem, 2vw, 1.8rem);
+}
+.start-game-button {
+  padding: 0.5rem 1.5rem;
 }
 
 .board {
   display: grid;
-  grid-template-columns: repeat(3, clamp(3.5rem, 10vw, 140px));
-  grid-template-rows: repeat(3, clamp(3.5rem, 10vw, 140px));
+  grid-template-columns: repeat(3, clamp(5rem, 10vw, 140px));
+  grid-template-rows: repeat(3, clamp(5rem, 10vw, 140px));
   gap: 4%;
   place-content: center;
 }
 
 .square {
   font-size: clamp(1.5rem, 4vw, 4rem);
+}
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 850px) {
+  .wrapper {
+    grid-template-columns: 85vw;
+    grid-template-rows: 55vh 45vh;
+  }
+  .game-form {
+    align-self: start;
+  }
+  form.new-game {
+    width: 200px;
+  }
 }

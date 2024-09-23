@@ -5,12 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Coiny&display=swap"
+      rel="stylesheet"
+    />
     <title>Tic Tac Toe</title>
   </head>
   <body>
+    <div class="display-winner hidden"></div>
     <div class="wrapper">
-      <div class="sidebar"><button class="reset-button">reset</button></div>
-      <div class="board">
+      <div class="board hidden">
         <button class="square top-left" data-row="0" data-column="0"></button>
         <button class="square top-centre" data-row="0" data-column="1"></button>
         <button class="square top-right" data-row="0" data-column="2"></button>
@@ -44,6 +50,24 @@
           data-row="2"
           data-column="2"
         ></button>
+      </div>
+      <div class="sidebar">
+        <div class="game-form">
+          <form action="" class="new-game">
+            <input
+              type="text"
+              class="player-1-input"
+              placeholder="player one name"
+              required
+            /><input
+              type="text"
+              class="player-2-input"
+              placeholder="player two name"
+              required
+            />
+            <button class="start-game-button">start new game</button>
+          </form>
+        </div>
       </div>
     </div>
   </body>

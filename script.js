@@ -1,7 +1,13 @@
 "use strict";
 
 const squareButtons = document.querySelectorAll(".square");
-const resetButton = document.querySelector(".reset-button");
+const startButton = document.querySelector(".start-game-button");
+const winnerDisplay = document.querySelector(".display-winner");
+const sidebar = document.querySelector(".sidebar");
+const gameForm = document.querySelector(".game-form");
+const gameBoard = document.querySelector(".board");
+const player1Input = document.querySelector(".player-1-input");
+const player2Input = document.querySelector(".player-2-input");
 
 // function to build the array of game squares. provided via variable so the size is described and eliminates a magic number;
 function GetGameBoard() {
@@ -27,18 +33,28 @@ function GetGameBoard() {
   return { squares, readSquareValue, setSquareValue };
 }
 
-function GetPlayer() {
-  const name = "test";
+function GetPlayer(playerNumber) {
+  const name = document.querySelector(`.player-${playerNumber}-input`).value;
+  const icon = playerNumber === 1 ? "❌" : "⭕";
+  //   const name = "test";
   //   const name = prompt("input name");
-  return { name };
+  return { name, icon };
+}
+
+function showWinner(name) {
+  console.log(name);
+  winnerDisplay.textContent = `${name} is the winner!`;
+  winnerDisplay.classList.remove("hidden");
+}
+function hideWinner() {
+  winnerDisplay.textContent = "";
+  winnerDisplay.classList.add("hidden");
 }
 
 function StartGame() {
   const board = GetGameBoard();
-  const player1 = GetPlayer();
-  player1.icon = "❌";
-  const player2 = GetPlayer();
-  player2.icon = "⭕";
+  const player1 = GetPlayer(1);
+  const player2 = GetPlayer(2);
   const currentPlayer = "player1";
 
   function renderSquareValues() {
@@ -67,8 +83,9 @@ function StartGame() {
   }
 
   function gameOver(winner) {
-    console.log(winner.name, "won the game");
     squareButtons.forEach((square) => (square.disabled = true));
+    showWinner(winner.name);
+    gameForm.classList.remove("hidden");
   }
 
   function checkRows() {
@@ -150,9 +167,7 @@ function StartGame() {
   };
 }
 
-let currentGame = StartGame();
-
-console.log(currentGame);
+let currentGame;
 
 squareButtons.forEach((square) =>
   square.addEventListener("click", (event) => {
@@ -165,11 +180,17 @@ squareButtons.forEach((square) =>
   })
 );
 
-resetButton.addEventListener("click", () => {
+startButton.addEventListener("click", (e) => {
+  if (player1Input.value === "" || player2Input.value === "") return;
+  e.preventDefault();
   squareButtons.forEach((square) => {
     square.disabled = false;
     square.innerHTML = "";
     square.style.boxShadow = "none";
   });
+  hideWinner();
   currentGame = StartGame();
+  gameBoard.classList.remove("hidden");
+  gameForm.classList.add("hidden");
+  player1Input.value = player2Input.value = "";
 });
