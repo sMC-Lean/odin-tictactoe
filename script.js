@@ -45,8 +45,10 @@ function GetPlayer(playerNumber) {
 // guard clause declares a tie if no winner is handed as an argument;
 function showWinner(name) {
   winnerDisplay.classList.remove("hidden");
-  if (!name) winnerDisplay.textContent = `It's a Tie!`;
-  else winnerDisplay.textContent = `${name} is the winner!`;
+  if (!name) {
+    winnerDisplay.textContent = `It's a Tie!`;
+    return;
+  } else winnerDisplay.textContent = `${name} is the winner!`;
 }
 
 function hideWinner() {
@@ -60,6 +62,7 @@ function StartGame() {
   const player1 = GetPlayer(1);
   const player2 = GetPlayer(2);
   const currentPlayer = "player1";
+  const gameWon = false;
 
   // loops over the gameBoard array and renders the value of each position to the relevant DOM element;
   //   indices for the loop elements are mapped to the correct location of the DOM squares using the dataset attr;
@@ -98,11 +101,10 @@ function StartGame() {
     squareButtons.forEach((square) => (square.disabled = true));
     turnDisplay.classList.add("hidden");
     turnDisplay.textContent = "";
-    if (!winner) {
-      showWinner();
+    if (currentGame.gameWon) {
+      showWinner(winner.name);
       return;
-    }
-    showWinner(winner.name);
+    } else if (!winner) showWinner();
   }
 
   //   loops over each row of the gameboard. filter method to confirm row is full then checks if all entries are equal;
@@ -114,6 +116,7 @@ function StartGame() {
             (rowEntry, _, rowArray) => rowEntry.value === rowArray[0].value
           )
         ) {
+          this.gameWon = true;
           this.gameOver(row[0]);
         }
       }
@@ -136,8 +139,10 @@ function StartGame() {
           (columnEntry, _, columnArray) =>
             columnEntry.value === columnArray[0].value
         )
-      )
+      ) {
+        this.gameWon = true;
         this.gameOver(column[0]);
+      }
     });
   }
   //   constructs arrays from the diagonal entries from the gameboard array. loops over them to check they are full and checks if all entries are equal;
@@ -161,6 +166,7 @@ function StartGame() {
           (diagonalEntry) => diagonalEntry.value === diagonalRow[0].value
         )
       ) {
+        this.gameWon = true;
         this.gameOver(diagonalRow[0]);
       }
     });
@@ -178,7 +184,7 @@ function StartGame() {
     this.checkRows();
     this.checkColumns();
     this.checkDiagonals();
-    this.checkForTie();
+    if (!this.gameWon) this.checkForTie();
   }
 
   return {
@@ -194,6 +200,7 @@ function StartGame() {
     checkDiagonals,
     checkForTie,
     gameOver,
+    gameWon,
   };
 }
 
