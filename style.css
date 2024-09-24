@@ -56,6 +56,7 @@ input {
 input {
   background-color: #fafafa;
   padding: 0 1.2ch;
+  margin-bottom: 5px;
 }
 
 input::placeholder {
@@ -93,6 +94,18 @@ button:active {
   font-size: clamp(1rem, 3vw, 3rem);
 }
 
+.display-turn {
+  position: absolute;
+  width: 100%;
+  bottom: 2%;
+  left: 50%;
+  margin-left: -50%;
+  text-align: center;
+  color: #be123c;
+  font-size: clamp(1rem, 3vw, 3rem);
+  text-align: center;
+}
+
 .sidebar,
 .board {
   border: 2px solid yellowgreen;
@@ -109,7 +122,7 @@ button:active {
 form.new-game {
   display: flex;
   flex-direction: column;
-  gap: 4%;
+  padding-top: 10%;
   width: clamp(200px, 75%, 350px);
   justify-self: center;
   font-size: clamp(0.8rem, 2vw, 1.8rem);
@@ -143,5 +156,11 @@ form.new-game {
   }
   form.new-game {
     width: 200px;
+  }
+
+  .display-turn {
+    margin-left: -50%;
+    text-align: center;
+    top: 50%;
   }
 }

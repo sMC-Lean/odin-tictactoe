@@ -3,13 +3,14 @@
 const squareButtons = document.querySelectorAll(".square");
 const startButton = document.querySelector(".start-game-button");
 const winnerDisplay = document.querySelector(".display-winner");
+const turnDisplay = document.querySelector(".display-turn");
 const sidebar = document.querySelector(".sidebar");
 const gameForm = document.querySelector(".game-form");
 const gameBoard = document.querySelector(".board");
 const player1Input = document.querySelector(".player-1-input");
 const player2Input = document.querySelector(".player-2-input");
 
-// function to build the array of game squares. provided via variable so the size is described and eliminates a magic number;
+// factory function to build the array of game squares. provided via variable so the size is described and eliminates a magic number;
 function GetGameBoard() {
   const boardSize = 3;
   const squares = [];
@@ -33,30 +34,35 @@ function GetGameBoard() {
   return { squares, readSquareValue, setSquareValue };
 }
 
+// factory function returns a player object the current game, retrieves the name from the input field;
 function GetPlayer(playerNumber) {
   const name = document.querySelector(`.player-${playerNumber}-input`).value;
   const icon = playerNumber === 1 ? "❌" : "⭕";
-  //   const name = "test";
-  //   const name = prompt("input name");
   return { name, icon };
 }
 
+// helper functions for updating the display;
+// guard clause declares a tie if no winner is handed as an argument;
 function showWinner(name) {
-  console.log(name);
-  winnerDisplay.textContent = `${name} is the winner!`;
   winnerDisplay.classList.remove("hidden");
+  if (!name) winnerDisplay.textContent = `It's a Tie!`;
+  else winnerDisplay.textContent = `${name} is the winner!`;
 }
+
 function hideWinner() {
   winnerDisplay.textContent = "";
   winnerDisplay.classList.add("hidden");
 }
 
+// factory function, instantiates the main object to run the current game, including private methods for the game logic;
 function StartGame() {
   const board = GetGameBoard();
   const player1 = GetPlayer(1);
   const player2 = GetPlayer(2);
   const currentPlayer = "player1";
 
+  // loops over the gameBoard array and renders the value of each position to the relevant DOM element;
+  //   indices for the loop elements are mapped to the correct location of the DOM squares using the dataset attr;
   function renderSquareValues() {
     this.board.squares.forEach((row, rowIndex) => {
       row.forEach((entry, columnIndex) => {
@@ -69,6 +75,8 @@ function StartGame() {
     });
   }
 
+  //   called each time a square is clicked on the gameBoard, gets the array coordinates of the clicked el. from the dataset attr and writes the values to the correct array index;
+  // re-renders the display and then checks to see if the game is completed;
   function takeTurn(row, column, player) {
     this.board.setSquareValue(
       row,
@@ -78,16 +86,26 @@ function StartGame() {
     );
     this.currentPlayer =
       this.currentPlayer === "player1" ? "player2" : "player1";
+    turnDisplay.textContent = `${this[this.currentPlayer].name}'s turn`;
     this.renderSquareValues();
     this.checkForWinner();
   }
 
+  //   callback function to end the game if one of the winning conditions is found by the 'check' functions;
+  //   guard clause calls the showWinner function with no arguments if a tie condition is met;
   function gameOver(winner) {
-    squareButtons.forEach((square) => (square.disabled = true));
-    showWinner(winner.name);
     gameForm.classList.remove("hidden");
+    squareButtons.forEach((square) => (square.disabled = true));
+    turnDisplay.classList.add("hidden");
+    turnDisplay.textContent = "";
+    if (!winner) {
+      showWinner();
+      return;
+    }
+    showWinner(winner.name);
   }
 
+  //   loops over each row of the gameboard. filter method to confirm row is full then checks if all entries are equal;
   function checkRows() {
     this.board.squares.forEach((row) => {
       if (row.filter((rowEntry) => rowEntry !== null).length === row.length) {
@@ -102,6 +120,8 @@ function StartGame() {
     });
   }
 
+  //   loops through the first row of the gameboard, for each position that is not empty constructs an array from the column entires in the   gameboard array;
+  // checks if the new array is full, and then checks if all entries are equal;
   function checkColumns() {
     this.board.squares[0].forEach((rowEntry, index) => {
       if (!rowEntry) return;
@@ -120,7 +140,7 @@ function StartGame() {
         this.gameOver(column[0]);
     });
   }
-
+  //   constructs arrays from the diagonal entries from the gameboard array. loops over them to check they are full and checks if all entries are equal;
   function checkDiagonals() {
     const diagonals = [
       [
@@ -146,10 +166,19 @@ function StartGame() {
     });
   }
 
+  //   counts the empty squares in the gameboard array, if there are 0 and no winner has been declared game ends in draw;
+  function checkForTie() {
+    const emptySquareCount = this.board.squares
+      .flat()
+      .filter((value) => !value).length;
+    if (!emptySquareCount) gameOver();
+  }
+
   function checkForWinner() {
     this.checkRows();
     this.checkColumns();
     this.checkDiagonals();
+    this.checkForTie();
   }
 
   return {
@@ -163,6 +192,7 @@ function StartGame() {
     checkRows,
     checkColumns,
     checkDiagonals,
+    checkForTie,
     gameOver,
   };
 }
@@ -193,4 +223,8 @@ startButton.addEventListener("click", (e) => {
   gameBoard.classList.remove("hidden");
   gameForm.classList.add("hidden");
   player1Input.value = player2Input.value = "";
+  turnDisplay.classList.remove("hidden");
+  turnDisplay.textContent = `${
+    currentGame[currentGame.currentPlayer].name
+  } goes first`;
 });
