@@ -108,7 +108,6 @@ button:active {
 
 .sidebar,
 .board {
-  border: 2px solid yellowgreen;
   display: grid;
 }
 
